@@ -2,34 +2,62 @@
 #include <dt-bindings/zmk/keys.h>
 #include <dt-bindings/zmk/bt.h>
 
+#define DEFAULT 0
+#define LOWER   1
+#define RAISE   2
+
 / {
 	keymap {
 		compatible = "zmk,keymap";
-
+		
 		default_layer {
 				// ------------------------------------------------------------------------------------------
-				// | ESC |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  0  |  -  |  =  |   BKSP   |
-				// | TAB  |  Q  |  W  |  E  |  R  |  T  |  Y  |  U  |  I  |  O  |  P  |  [  |  ]  |   "|"   |
-				// | CAPS  |  A  |  S  |  D  |  F  |  G  |  H  |  J  |  K  |  L  |  ;  |  '  |     ENTER    |
-				// |  SHIFT    |  Z  |  X  |  C  |  V  |  B  |  N  |  M  |  ,  |  .  | /   |     SHIFT      |
-				// |  CTL  |  WIN  |  ALT  |                     SPACE               |   ALT   |  1  | CTRL |
+				// | ESC |  1  |  2  |  3  |  4  |  5  |  6  |  7  |  8  |  9  |  0  |  -  |  =  |  \  |  ` | 15 keys
+				// | TAB  |  Q  |  W  |  E  |  R  |  T  |  Y  |  U  |  I  |  O  |  P  |  [  |  ]  |   BKSP  | 14 keys
+				// | CTL   |  A  |  S  |  D  |  F  |  G  |  H  |  J  |  K  |  L  |  ;  |  '  |     ENTER    | 13 keys
+				// | SHIFT    |  Z  |  X  |  C  |  V  |  B  |  N  |  M  |  ,  |  .  | /   |  SHIFT  | MO(1) | 13 keys
+				// | MO(1) |  ALT  |  WIN  |           SPACE           |   WIN    |   ALT   |  MENU  | CTRL | 08 keys
 				// ------------------------------------------------------------------------------------------
 			bindings = <
-				&kp ESC &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6 &kp N7 &kp  N8   &kp  N9 &kp  N0  &kp MINUS &kp EQUAL &kp BSPC &kp DEL
-				&kp TAB  &kp Q  &kp W  &kp E  &kp R  &kp T  &kp Y  &kp U  &kp  I    &kp  O  &kp  P   &kp LBKT &kp RBKT  &kp BSLH
-				&kp CLCK  &kp A  &kp S  &kp D  &kp F  &kp G  &kp H  &kp J  &kp  K    &kp  L  &kp SEMI &kp SQT           &kp RET
-				&kp LSHFT  &kp Z  &kp X  &kp C  &kp V  &kp B  &kp N  &kp M  &kp COMMA &kp DOT &kp FSLH    &kp RSHFT    &mo 1
-				&kp LCTRL &kp LGUI &kp LALT            &kp SPACE                          &kp RALT &kp RGUI &kp C_MENU &kp RCTRL
+				&kp ESC &kp N1 &kp N2 &kp N3 &kp N4 &kp N5 &kp N6 &kp N7 &kp N8 &kp N9 &kp N0 &kp MINUS &kp EQUAL &kp BSLH &kp GRAVE
+				&kp TAB &kp Q &kp W &kp E &kp R &kp T &kp Y &kp U &kp I &kp O &kp P &kp LBKT &kp RBKT &kp BSPC
+				&kp LCTRL &kp A &kp S &kp D &kp F &kp G &kp H &kp J &kp K &kp L &kp SEMI &kp SQT &kp RET
+				&kp LSHFT &kp Z &kp X &kp C &kp V &kp B &kp N &kp M &kp COMMA &kp DOT &kp FSLH &kp RSHFT &mo LOWER
+				&mo LOWER &kp LALT &kp LGUI &kp SPACE &kp RGUI &kp RALT &kp C_MENU &kp RCTRL
 			>;
 			sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
 		};
-		raise {
+		LOWER {
+		                // ------------------------------------------------------------------------------------------
+				// | ESC   |  F1 |  F2 |  F3 |  F4 |  F5 |  F6 |  F7 | F8 | F9 | F10 | F11 | F12 | INS | DEL |
+				// | CAPS  |  Q  |  W  |  E  |  R  |  T  |  Y  |  U  | PSCRN | SLCK | PAUSE | UP | ] | BSPC  |
+				// | CTL   | VOL_DN | VOL_UP | MUTE | F | G | H | INS | HOME | PG_UP | LEFT | RIGHT | ENTER  |
+				// | SHIFT | PREV | PLAY/PAUSE | NEXT | V | B | N | DEL | END | PG_DN | DOWN | SHIFT | MO(1) |
+				// | MO(1) |  ALT  |  WIN  |             SPACE            |  WIN  |  ALT  |  MO(2)  |  CTRL  |
+				// ------------------------------------------------------------------------------------------
 			bindings = <
-				&kp GRAVE &kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &kp F7 &kp  F8   &kp  F9 &kp  F10  &kp F11 &kp F12   &kp DEL &trans
-				&trans &trans &kp UP &trans &trans &trans &trans &trans &kp INS &trans &kp PSCRN &kp SLCK &kp PAUSE_BREAK &reset
-				&trans    &kp LEFT &kp DOWN &kp RIGHT &trans &trans &trans &trans &trans &trans &kp HOME  &kp PG_UP   &bootloader
-				&kp C_PREV &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &trans &trans &trans &trans &trans &trans &kp END &kp PG_DN  &kp C_NEXT
-				&bt BT_PRV &bt BT_NXT  &trans                       &trans                            &trans  &trans &bt BT_CLR
+				&trans &kp F1 &kp F2 &kp F3 &kp F4 &kp F5 &kp F6 &kp F7 &kp F8 &kp F9 &kp F10 &kp F11 &kp F12 &kp INS &kp DEL 
+				&kp CLCK &trans &trans &trans &trans &trans &trans &trans &kp PSCRN &kp SLCK &kp PAUSE_BREAK &kp UP &trans &trans
+				&trans &kp C_VOL_DN &kp C_VOL_UP &kp C_MUTE &trans &trans &trans &kp INS &kp HOME &kp PG_UP &kp LEFT &kp RIGHT &trans
+				&trans &kp C_PREV &kp C_PP &kp C_NEXT &trans &trans &trans &kp DEL &kp END &kp PG_DN &kp DOWN &trans &trans
+				&trans &trans &trans &trans &trans &trans &mo RAISE &trans
+			>;
+			sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
+		};
+		RAISE {
+				// ------------------------------------------------------------------------------------------
+				// | RESET | BT_1 | BT_2 | BT_3 | BT_4 | BT_5 | 6 | 7 | 8 | 9 | 0 | -  | = | \ | BOOTLOADER |
+				// | TAB  |  BT_PRV  |  BT_NXT  | E |  R  |  T  |  Y  |  U |  I |  O |  P | [ | ] |   BSPC  |
+				// | CTL   |  A  |  S  |  D  |  F  |  G  |  H  |  J  |  K  |  L  |  ;  |  '  |     ENTER    |
+				// | SHIFT  | BT_CLR |  X  |  C  |  V  |  B  |  N  |  M  |  ,  |  .  | /  |  SHIFT  | MO(1) |
+				// | MO(1) |  ALT  |  WIN  |           SPACE           |   WIN   |   ALT   |  MO(2)  | CTRL |
+				// ------------------------------------------------------------------------------------------
+			bindings = <
+				&reset &bt BT_SEL 0 &bt BT_SEL 1 &bt BT_SEL 2 &bt BT_SEL 3 &bt BT_SEL 4 &trans &trans &trans &trans &trans &trans &trans &trans &bootloader 
+				&trans &bt BT_PRV &bt BT_NXT &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+				&trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+				&trans &bt BT_CLR &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans &trans
+				&trans &trans &trans &trans &trans &trans &trans &trans
 			>;
 			sensor-bindings = <&inc_dec_kp C_VOL_UP C_VOL_DN>;
 		};
